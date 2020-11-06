@@ -1,13 +1,4 @@
 <template>
-  <!DOCTYPE html>
-  <html>
-
-  <head>
-    <meta charset="utf-8" />
-    <title>校宝教育管理系统</title>
-  </head>
-
-  <body>
     <div class="header">
       <div class="content header-content">
         <div class="header-content-left">
@@ -197,10 +188,6 @@
         <div id="tel">400-6999-707</div>
       </div>
     </div>
-  </body>
-
-  </html>
-
 </template>
 <script>
 import "@/assets/js/index.js";
