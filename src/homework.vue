@@ -110,14 +110,16 @@
               type="text"
               placeholder="请输入机构后缀"
               name="jigou-name"
+              v-model="companySuffix"
+              @input="checkSuffix"
             />
             <span
               class="error"
               name="jigou-nameError"
-            ></span>
+            >{{suffixError}}</span>
           </div>
           <div
-            class="content-body-right-inputbox"
+            class="content-body-right-inputbox" 
             id="jigouuser-box"
           >
             <img
@@ -128,11 +130,13 @@
               type="text"
               placeholder="请输入登录名"
               name="jigou-username"
+              v-model="companyUsername"
+              @input="checkUsername"
             />
             <span
               class="error"
               name="jigou-usernameError"
-            ></span>
+            >{{usernameError}}</span>
           </div>
           <div
             class="content-body-right-inputbox"
@@ -146,14 +150,17 @@
               type="text"
               placeholder="请输入密码"
               name="jigoou-password"
+              v-model="companyPassword"
+              @input="checkCompanyPassword"
             />
             <span
               class="error"
               name="jigou-passwordError"
-            ></span>
+            >{{passwordError}}</span>
           </div>
           <div
             class="content-body-right-btn"
+            @click="accountSubmit"
           >登录</div>
         </div>
         <!---->
@@ -208,7 +215,13 @@ export default {
       usephone: true,
       useaccount: false,
       phone: "",
-      phonePassword: ""
+      phonePassword: "",
+      companySuffix: "",
+      companyUsername:"",
+      companyPassword:"",
+      suffixError:"",
+      usernameError:"",
+      passwordError:""
     };
   },
 
@@ -221,8 +234,15 @@ export default {
       this.usephone = false;
       this.useaccount = true;
     },
+    accountSubmit: function(){
+        this.checkSuffix();
+        this.checkUsername();
+        this.checkCompanyPassword();
+    },
     submit: function () {
-      if (this.checkPhone() && this.checkPhonePassword()) {
+      var phoneFlag = this.checkPhonePassword();
+      var phonePasswordFlag = this.checkPhone();
+      if (phoneFlag && phonePasswordFlag) {
         var url = "https://openapi.xiaobaoxiu.cn/mock/api/v1/login";
         this.login(
           url,
@@ -259,9 +279,49 @@ export default {
           }
         });
     },
-    checkPhone: function () {
-      if(this.phone.length<11){
+    checkCompanyPassword: function() {
+      if(this.companyPassword.length < 1){
+        this.passwordError = "密码不能为空";
+        return false;
+      }else if(this.companyPassword.length < 8){
+        this.passwordError = "密码不能小于8位";
+        return false;
+      }else{
+        this.passwordError = "";
+        return true;
+      }
+    },
+    checkUsername: function(){
+       if(this.companyUsername.length < 1){
+        this.usernameError = "用户名不能为空";
+        return false;
+      }else if(this.companyUsername.length <= 6){
+        this.usernameError = "用户名不能小于6位";
+        return false;
+      }else{
+        this.usernameError = "";
+        return true;
+      }
+    },
+    checkSuffix: function(){
+      if(this.companySuffix.length < 1){
+        this.suffixError = "后缀名不能为空";
+        return false;
+      }else if(this.companySuffix.length <= 2){
+        this.suffixError = "后缀名不能小于2";
+        return false;
+      }else{
+        this.suffixError = "";
+        return true;
+      }
+    },
+    checkPhone: function (test) {
+      console.log(test)
+      if(this.phone.length<11 && this.phone.length>0){
         this.phoneError = "手机号必须为11位";
+        return false;
+      }else if(this.phone.length < 1){
+        this.phoneError = "手机号不能为空";
         return false;
       }else{
         this.phoneError = "";
@@ -269,10 +329,15 @@ export default {
       }
     },
     checkPhonePassword: function () {
-      if(this.phonePassword.length<8){
+      console.log("?")
+      if(this.phonePassword.length<8 && this.phonePassword.length >=1){
         this.phonePasswordError = "密码必须大于8位";
         return false;
-      }else{
+      }else if(this.phonePassword <1){
+        this.phonePasswordError = "密码不能为空";
+        return false;
+      }
+      else{
         this.phonePasswordError = "";
         return true;
       }
