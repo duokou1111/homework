@@ -52,6 +52,7 @@
               name="username"
               v-model="phone"
               @input="checkPhone"
+              :class="phoneborder"
             />
             <span
               class="error"
@@ -73,6 +74,7 @@
               name="password"
               v-model="phonePassword"
               @input="checkPhonePassword"
+              :class="passwordborder"
             />
             <span
               class="error"
@@ -103,6 +105,7 @@
               name="jigou-name"
               v-model="companySuffix"
               @input="checkSuffix"
+              :class="suffixborder"
             />
             <span
               class="error"
@@ -123,6 +126,7 @@
               name="jigou-username"
               v-model="companyUsername"
               @input="checkUsername"
+              :class="usernameborder"
             />
             <span
               class="error"
@@ -143,6 +147,7 @@
               name="jigoou-password"
               v-model="companyPassword"
               @input="checkCompanyPassword"
+              :class="companyPasswordBorder"
             />
             <span
               class="error"
@@ -197,10 +202,10 @@ export default {
   name: "App",
   data() {
     return {
-      phoneError:'',
-      phonePasswordError:'',
       usephone: true,
       useaccount: false,
+      phoneError:'',
+      phonePasswordError:'',
       phone: "",
       phonePassword: "",
       companySuffix: "",
@@ -211,7 +216,33 @@ export default {
       passwordError:""
     };
   },
-
+  computed :{
+    phoneborder(){
+      return {
+         inputWrong: this.phoneError.length>=1
+      }
+    },
+     passwordborder(){
+      return {
+         inputWrong: this.phonePasswordError.length>=1
+      }
+    },
+     suffixborder(){
+      return {
+         inputWrong: this.suffixError.length>=1
+      }
+    },
+    usernameborder(){
+      return {
+         inputWrong: this.usernameError.length>=1
+      }
+    },
+    companyPasswordBorder(){
+      return {
+         inputWrong: this.passwordError.length>=1
+      }
+    }
+  },
   methods: {
     usePhone: function () {
       this.usephone = true;
